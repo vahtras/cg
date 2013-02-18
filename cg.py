@@ -85,15 +85,28 @@ class cg:
             return 0.0
       
 if __name__ == "__main__":
+    """Output Clebsh Gordan matrix, input given as fractions"""
     import sys
+    from fractions import Fraction
     try:
-        j1 = float(sys.argv[1])
-        j2 = float(sys.argv[2])
-    except IndexError:
-        print "Usage: %s j1 j2" % sys.argv[0]
-        sys.exit(-1)
+        a1 = sys.argv[1]
+        a2 = sys.argv[2]
+    except(IndexError):
+        print "Usage:cg.py j1 j2"
+        sys.exit(1)
+
+    # Process input variables
+    def halfint(a):
+        j = Fraction(*map(int, a.split('/')))
+        assert j.denominator == 2 or j.denominator == 1
+        return j
+
+    j1 = halfint(a1)
+    j2 = halfint(a2)
+
     J1 = int(2*j1)
     J2 = int(2*j2)
+
     for J in range(J1+J2, abs(J1-J2)-1, -2):
         print ""
         j = .5*J
