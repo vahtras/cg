@@ -2,17 +2,8 @@
 """A Clebsh Gordan coefficient module"""
 def fh(n):
     """Return factorial for half value"""
-    assert iseven(n)
-    return fac(n/2)
-
-def fac(n):
-    """Return factorial of n recursively"""
-    assert n >= 0
-    assert type(n).__name__ == 'int'
-    if n == 0:
-        return 1
-    else:
-        return n*fac(n-1)
+    from math import factorial
+    return factorial(n/2)
 
 def isodd(j):
     """Return True for odd integer input"""
