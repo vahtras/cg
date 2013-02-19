@@ -39,7 +39,7 @@ def iseven(j):
     """Return True for even integer input"""
     return j % 2 == 0
 
-class cg:
+class CG:
     """ ClebshGordan class"""
     def __init__(self, j1, j2, j):
         self.j1 = j1
@@ -91,6 +91,7 @@ if __name__ == "__main__":
         print "Usage:cg.py j1 j2"
         sys.exit(1)
 
+
     # Process input variables
     def halfint(a):
         j = Fraction(*map(int, a.split('/')))
@@ -100,7 +101,13 @@ if __name__ == "__main__":
     j1 = halfint(a1)
     j2 = halfint(a2)
 
-    for j in jrange(j1, j2):
+    try:
+        a3 = sys.argv[3]
+        js = (halfint(a3),)
+    except(IndexError):
+        js = jrange(j1, j2)
+
+    for j in js:
         j1, j2, j
-        print cg(j1, j2, j).cgmat
+        print CG(j1, j2, j).cgmat
 
