@@ -40,5 +40,15 @@ def test_ddt():
     ddt = cg.CG(h, h, 1)
     assert_cg(ref, ddt)
 
+def test_st():
+    ref = [[1.0, 1.0, 1.0]]
+    st = cg.CG(0, 1, 1)
+    assert_cg(ref, st)
+
+def test_ts():
+    ref = [[1.0], [1.0], [1.0]]
+    ts = cg.CG(1, 0, 1)
+    assert_cg(ref, ts)
+
 if __name__ == "__main__":
     test_dds()
