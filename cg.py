@@ -58,7 +58,7 @@ class CG:
                     kmax = int(min(j1+j2-j, j1-m1, j2+m2))
                     ksum = 0
                     for k in range(kmin, kmax+1):
-                        ksum += (-1)**(k) / (
+                        ksum += float((-1)**(k)) / (
                               fac(k)*fac(j1+j2-j-k)*fac(j1-m1-k)*fac(j2+m2-k)
                               *fac(j-j2+m1+k)*fac(j-j1-m2+k)
                               )
