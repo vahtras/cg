@@ -1,9 +1,35 @@
 #!/usr/bin/env python
 """A Clebsh Gordan coefficient module"""
-def fh(n):
-    """Return factorial for half value"""
-    from math import factorial
-    return factorial(n/2)
+
+from math import sqrt, factorial
+from fractions import Fraction
+import numpy as np
+
+def jrange(j1, j2):
+    """Generator function looping over valid total angular momenta j"""
+    j = abs(j1 - j2)
+    while j <= j1 + j2:
+        yield j
+        j += 1
+
+def mrange(j):
+    """Generator function looping over valid total angular momentum projections m"""
+    m = -j
+    while m <= j:
+        yield m
+        m += 1
+
+def inspect(f):
+    def wrap(*args, **kwargs):
+        print f.__name__, args, "=",
+        result = f(*args, **kwargs)
+        print result
+        return result
+    return wrap
+
+#@inspect
+def fac(arg):
+    return factorial(int(arg))
 
 def isodd(j):
     """Return True for odd integer input"""
@@ -15,75 +41,45 @@ def iseven(j):
 
 class cg:
     """ ClebshGordan class"""
-    def __init__(self, j1, j2, m1, m2, j, m):
-        self.j1 = int(2*j1)
-        self.j2 = int(2*j2)
-        self.m1 = int(2*m1)
-        self.m2 = int(2*m2)
-        self.j = int(2*j)
-        self.m = int(2*m)
-        self.data = self()
-    def __repr__(self):
-        j1 = self.j1
-        j2 = self.j2
-        m1 = self.m1
-        m2 = self.m2
-        j = self.j
-        m = self.m
-        retstr = "<"
-        pr = []
-        for i in (j1, j2, m1, m2, j, m):
-            if i >= 0 : retstr += " "
-            if isodd(i):
-                pr.append(i)
-                retstr += " %d/2"
-            else:
-                pr.append(i/2)
-                retstr += " %d"
-        if self.data < 0: 
-            retstr += " > = %f"
-        else:
-            retstr += " > =  %f"
-        prt = tuple(pr+[self.data])
-        return retstr % prt
+    def __init__(self, j1, j2, j):
+        self.j1 = j1
+        self.j2 = j2
+        self.j = j
+        n1 = int(2*j1) + 1
+        n2 = int(2*j2) + 1
 
-    def __call__(self):
-        """Callable object"""
-        from math import sqrt
-        j1 = self.j1
-        j2 = self.j2
-        m1 = self.m1
-        m2 = self.m2
-        j = self.j
-        m = self.m
-        assert abs(m1) <= j1
-        assert abs(m2) <= j2
-        assert abs(m)  <= j
-        #print j1,j2,m1,m2,j,m
-        if m1+m2 == m and abs(j1-j2) <= j <= j1+j2:
-            _f = sqrt(
-                1.0*fh(j1+j2-j)*fh(j+j1-j2)*fh(j+j2-j1)*(j+1)
-                /fh(j+j1+j2+2)
-                )
-           #print "_f",_f
-            kmin = max(0, -(j-j2+m1), -(j-j1-m2))
-            kmax = min(j1+j2-j, j1-m1, j2+m2)
-           #print "kmin=",kmin/2
-           #print "kmax=",kmax/2
-            _fsum = 0
-            for k in range(kmin, kmax+2, 2):
-               #print "k=",k/2
-                _fsum += (-1)**(k/2)*sqrt(
-                    fh(j1+m1)*fh(j1-m1)*fh(j2+m2)*fh(j2-m2)*fh(j+m)*fh(j-m)
-                    )/(
-                      fh(k)*fh(j1+j2-j-k)*fh(j1-m1-k)*fh(j2+m2-k)
-                      *fh(j-j2+m1+k)*fh(j-j1-m2+k)
-                      )
-           #print "_fsum",_fsum
-            return _f * _fsum
-        else:
-            return 0.0
-      
+        self.cgmat = np.zeros((n1, n2))
+        jfac = sqrt(
+            fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1)
+            /fac(j+j1+j2+1)
+            )
+        mj = list(mrange(j))
+        for m1 in mrange(j1):
+            p1 = int(j1 + m1)
+            for m2 in mrange(j2):
+                p2 = int(j2 + m2)
+                m = m1 + m2
+                if m in mj:
+                    mfac = sqrt(fac(j1+m1)*fac(j1-m1)*fac(j2+m2)*fac(j2-m2)*fac(j+m)*fac(j-m))
+
+                    kmin = int(max(0, -(j-j2+m1), -(j-j1-m2)))
+                    kmax = int(min(j1+j2-j, j1-m1, j2+m2))
+                    ksum = 0
+                    for k in range(kmin, kmax+1):
+                        ksum += (-1)**(k) / (
+                              fac(k)*fac(j1+j2-j-k)*fac(j1-m1-k)*fac(j2+m2-k)
+                              *fac(j-j2+m1+k)*fac(j-j1-m2+k)
+                              )
+                    self.cgmat[p1, p2] = jfac*mfac*ksum
+
+    def __setitem__(self, m1, m2, val):
+        p1 = int(self.j1 + m1)
+        p2 = int(self.j2 + m2)
+        self.cgmat[p1, p2]  = val
+
+    def __getitem__(self, m1, m2):
+        return self.cgmat[int(self.j1+m1), int(self.j2+m2)]
+
 if __name__ == "__main__":
     """Output Clebsh Gordan matrix, input given as fractions"""
     import sys
@@ -104,18 +100,7 @@ if __name__ == "__main__":
     j1 = halfint(a1)
     j2 = halfint(a2)
 
-    J1 = int(2*j1)
-    J2 = int(2*j2)
+    for j in jrange(j1, j2):
+        j1, j2, j
+        print cg(j1, j2, j).cgmat
 
-    for J in range(J1+J2, abs(J1-J2)-1, -2):
-        print ""
-        j = .5*J
-        for M in range(J, -J-1, -2):
-            m = .5*M
-            for M1 in range(J1, -J1-1, -2):
-                m1 = .5*M1
-                m2 = m-m1
-                if abs(m2) > j2:
-                    pass
-                else:
-                    print cg(j1, j2, m1, m2, j, m)
