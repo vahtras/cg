@@ -31,14 +31,6 @@ def inspect(f):
 def fac(arg):
     return factorial(int(arg))
 
-def isodd(j):
-    """Return True for odd integer input"""
-    return j % 2 == 1
-
-def iseven(j):
-    """Return True for even integer input"""
-    return j % 2 == 0
-
 class CG:
     """ ClebshGordan class"""
     def __init__(self, j1, j2, j):
@@ -50,7 +42,7 @@ class CG:
 
         self.cgmat = np.zeros((n1, n2))
         jfac = sqrt(
-            fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1)
+            float(fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1))
             /fac(j+j1+j2+1)
             )
         mj = list(mrange(j))
@@ -87,10 +79,10 @@ if __name__ == "__main__":
     try:
         a1 = sys.argv[1]
         a2 = sys.argv[2]
+        a3 = sys.argv[3]
     except(IndexError):
-        print "Usage:cg.py j1 j2"
+        print "Usage:cg.py j1 j2 j"
         sys.exit(1)
-
 
     # Process input variables
     def halfint(a):
@@ -100,14 +92,7 @@ if __name__ == "__main__":
 
     j1 = halfint(a1)
     j2 = halfint(a2)
+    j  = halfint(a3)
 
-    try:
-        a3 = sys.argv[3]
-        js = (halfint(a3),)
-    except(IndexError):
-        js = jrange(j1, j2)
-
-    for j in js:
-        j1, j2, j
-        print CG(j1, j2, j).cgmat
+    print CG(j1, j2, j).cgmat
 
