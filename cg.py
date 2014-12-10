@@ -36,6 +36,13 @@ class CG(object):
         n2 = int(2*j2) + 1
 
         self.cgmat = np.zeros((n1, n2))
+        self.set_matrix()
+
+    def set_matrix(self):
+        j1 = self.j1
+        j2 = self.j2
+        j = self.j
+
         jfac = sqrt(
             float(fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1))
             /fac(j+j1+j2+1)
