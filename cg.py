@@ -83,7 +83,8 @@ if __name__ == "__main__":
     # Process input variables
     def halfint(a):
         """Convert string input to Fractional type"""
-        j = Fraction(*map(int, a.split('/')))
+        numerator_denumerator = tuple([int(a_) for a_ in a.split('/')])
+        j = Fraction(*numerator_denumerator)
         assert j.denominator == 2 or j.denominator == 1
         return j
 
