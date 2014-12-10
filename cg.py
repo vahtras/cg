@@ -49,13 +49,12 @@ class CG(object):
             float(fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1))
             /fac(j+j1+j2+1)
             )
-        mj = list(mrange(j))
         for m1 in mrange(j1):
             p1 = int(j1 + m1)
             for m2 in mrange(j2):
                 p2 = int(j2 + m2)
                 m = m1 + m2
-                if m in mj:
+                if m in mrange(j):
                     mfac = sqrt(
                         fac(j1+m1)*fac(j1-m1)*fac(j2+m2)*\
                         fac(j2-m2)*fac(j+m)*fac(j-m)
