@@ -89,6 +89,13 @@ class CG(object):
     def __getitem__(self, m1, m2):
         return self.cgmat[int(self.j1+m1), int(self.j2+m2)]
 
+
+class HalfInt(Fraction):
+    def __init__(self, *args):
+        super(HalfInt, self).__init__(*args)
+        if self.denominator > 2:
+            raise ValueError, 'invalid literal for HalfInt: %s' % str(args)
+
 if __name__ == "__main__":
     import sys
     try:
@@ -100,16 +107,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Process input variables
-    def halfint(a):
-        """Convert string input to Fractional type"""
-        numerator, denumerator = [int(a_) for a_ in a.split('/')]
-        j = Fraction(numerator, denumerator)
-        assert j.denominator == 2 or j.denominator == 1
-        return j
 
-    j_1 = halfint(a1)
-    j_2 = halfint(a2)
-    j_tot = halfint(a3)
+    j_1 = HalfInt(a1)
+    j_2 = HalfInt(a2)
+    j_tot = HalfInt(a3)
 
     print CG(j_1, j_2, j_tot).cgmat
 
