@@ -39,6 +39,8 @@ class CG(object):
         self.set_matrix()
 
     def set_matrix(self):
+        """Calculate transformation matrix"""
+
         j1 = self.j1
         j2 = self.j2
         j = self.j
@@ -90,8 +92,8 @@ if __name__ == "__main__":
     # Process input variables
     def halfint(a):
         """Convert string input to Fractional type"""
-        numerator_denumerator = tuple([int(a_) for a_ in a.split('/')])
-        j = Fraction(*numerator_denumerator)
+        numerator, denumerator = [int(a_) for a_ in a.split('/')]
+        j = Fraction(numerator, denumerator)
         assert j.denominator == 2 or j.denominator == 1
         return j
 
