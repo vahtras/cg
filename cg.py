@@ -69,6 +69,10 @@ class CG(object):
         self.cgmat *= self.jfac()
 
     def jfac(self):
+        """
+        Factor of j-values in cg-coefficient
+        """
+
         j1 = self.j1
         j2 = self.j2
         j = self.j
