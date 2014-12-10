@@ -45,10 +45,6 @@ class CG(object):
         j2 = self.j2
         j = self.j
 
-        jfac = sqrt(
-            float(fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1))
-            /fac(j+j1+j2+1)
-            )
         for m1 in mrange(j1):
             p1 = int(j1 + m1)
             for m2 in mrange(j2):
@@ -68,7 +64,18 @@ class CG(object):
                               fac(k)*fac(j1+j2-j-k)*fac(j1-m1-k)*fac(j2+m2-k)
                               *fac(j-j2+m1+k)*fac(j-j1-m2+k)
                               )
-                    self.cgmat[p1, p2] = jfac*mfac*ksum
+                    self.cgmat[p1, p2] = mfac*ksum
+
+        self.cgmat *= self.jfac()
+
+    def jfac(self):
+        j1 = self.j1
+        j2 = self.j2
+        j = self.j
+        return sqrt(
+            float(fac(j1+j2-j)*fac(j+j1-j2)*fac(j+j2-j1)*(2*j+1))
+            /fac(j+j1+j2+1)
+            )
 
     def __setitem__(self, m1, m2, val):
         p1 = int(self.j1 + m1)
