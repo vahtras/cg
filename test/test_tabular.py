@@ -1,7 +1,7 @@
 from math import sqrt
 import numpy as np
 from fractions import Fraction as frac
-from cg import cg
+from .. import cg
 
 def assert_cg(ref, obj):
     print (obj.j1, obj.j2, obj.j)
