@@ -8,13 +8,6 @@ from math import sqrt, factorial
 from fractions import Fraction
 import numpy as np
 
-def jrange(j1, j2):
-    """Generator function looping over valid total angular momenta j"""
-    j = abs(j1 - j2)
-    while j <= j1 + j2:
-        yield j
-        j += 1
-
 def mrange(j):
     """
     Generator function: given total angmular momentum j,
