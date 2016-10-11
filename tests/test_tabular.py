@@ -4,9 +4,9 @@ from fractions import Fraction as frac
 from .. import cg
 
 def assert_cg(ref, obj):
-    print (obj.j1, obj.j2, obj.j)
-    print ref 
-    print obj.cgmat
+    print(obj.j1, obj.j2, obj.j)
+    print(ref)
+    print(obj.cgmat)
     assert np.allclose(ref, obj.cgmat)
 
 def test_ss():

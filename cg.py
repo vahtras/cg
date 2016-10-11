@@ -92,9 +92,13 @@ class CG(object):
 
 class HalfInt(Fraction):
     def __init__(self, *args):
-        super(HalfInt, self).__init__(*args)
+        try:
+            super(HalfInt, self).__init__(*args)
+        except TypeError:
+            super().__init__()
+        #Fraction.__init__(*args)
         if self.denominator > 2:
-            raise ValueError, 'invalid literal for HalfInt: %s' % str(args)
+            raise ValueError('invalid literal for HalfInt: %s' % str(args))
 
 if __name__ == "__main__":
     import sys
@@ -103,7 +107,7 @@ if __name__ == "__main__":
         a2 = sys.argv[2]
         a3 = sys.argv[3]
     except IndexError:
-        print "Usage:cg.py j1 j2 j"
+        print("Usage:cg.py j1 j2 j")
         sys.exit(1)
 
     # Process input variables
@@ -112,5 +116,5 @@ if __name__ == "__main__":
     j_2 = HalfInt(a2)
     j_tot = HalfInt(a3)
 
-    print CG(j_1, j_2, j_tot).cgmat
+    print(CG(j_1, j_2, j_tot).cgmat)
 
