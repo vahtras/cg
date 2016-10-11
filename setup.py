@@ -8,5 +8,6 @@ setup(
     version=__version__,
     url="https://github.com/vahtras/cg",
     py_modules=["cg"],
+    scripts=["cg"],
     install_requires=["numpy"],
 )
