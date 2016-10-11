@@ -71,5 +71,14 @@ def test_ttq():
     ttq = cg.CG(1, 1, 2)
     assert_cg(ref, ttq)
 
+def test_get():
+    table = cg.CG(1, 1, 2)
+    assert abs(table[1, 1] -  1) < 1e-7
+
+def test_set():
+    table = cg.CG(1, 1, 2)
+    table[1, 1] = 7
+    assert abs(table.cgmat[2, 2] -  7) < 1e-7
+
 if __name__ == "__main__":
     test_dds()

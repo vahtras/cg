@@ -77,12 +77,14 @@ class CG(object):
             /fac(j+j1+j2+1)
             )
 
-    def __setitem__(self, m1, m2, val):
+    def __setitem__(self, ind, val):
+        m1, m2 = ind
         p1 = int(self.j1 + m1)
         p2 = int(self.j2 + m2)
         self.cgmat[p1, p2] = val
 
-    def __getitem__(self, m1, m2):
+    def __getitem__(self, ind):
+        m1, m2 = ind
         return self.cgmat[int(self.j1+m1), int(self.j2+m2)]
 
 
