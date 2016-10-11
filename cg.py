@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """A Clebsh Gordan coefficient module"""
 
+__version__ = "1.0"
+
 from math import sqrt, factorial
 from fractions import Fraction
 import numpy as np
