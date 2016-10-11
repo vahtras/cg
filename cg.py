@@ -3,6 +3,7 @@
 
 __version__ = "1.0"
 
+import sys
 from math import sqrt, factorial
 from fractions import Fraction
 import numpy as np
@@ -102,8 +103,7 @@ class HalfInt(Fraction):
         if self.denominator > 2:
             raise ValueError('invalid literal for HalfInt: %s' % str(args))
 
-if __name__ == "__main__":
-    import sys
+def main():
     try:
         a1 = sys.argv[1]
         a2 = sys.argv[2]
@@ -120,3 +120,5 @@ if __name__ == "__main__":
 
     print(CG(j_1, j_2, j_tot).cgmat)
 
+if __name__ == "__main__":
+    sys.exit(main())
