@@ -1,5 +1,8 @@
 import sys
-import io
+try:
+    from cStringIO import StringIO #Python2
+except(ImportError):
+    from io import StringIO #Python3
 from math import sqrt
 import numpy as np
 from fractions import Fraction as frac
@@ -84,8 +87,7 @@ def test_set():
 
 def test_main():
     sys.argv[1:] = [.5, .5, 0]
-    import io
-    sys.stdout = io.StringIO()
+    sys.stdout = StringIO()
     cg.main()
     out = sys.stdout.getvalue()
     assert out == """\
@@ -95,7 +97,7 @@ def test_main():
 
 def test_catch_indexerror():
     sys.argv[1:] = [1, 1]
-    sys.stdout = io.StringIO()
+    sys.stdout = StringIO()
     try:
         cg.main()
     except(SystemExit):
