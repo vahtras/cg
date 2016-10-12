@@ -1,3 +1,5 @@
+import sys
+import io
 from math import sqrt
 import numpy as np
 from fractions import Fraction as frac
@@ -80,5 +82,30 @@ def test_set():
     table[1, 1] = 7
     assert abs(table.cgmat[2, 2] -  7) < 1e-7
 
+def test_main():
+    sys.argv[1:] = [.5, .5, 0]
+    import io
+    sys.stdout = io.StringIO()
+    cg.main()
+    out = sys.stdout.getvalue()
+    assert out == """\
+[[ 0.         -0.70710678]
+ [ 0.70710678  0.        ]]
+"""
+
+def test_catch_indexerror():
+    sys.argv[1:] = [1, 1]
+    sys.stdout = io.StringIO()
+    try:
+        cg.main()
+    except(SystemExit):
+        out = sys.stdout.getvalue()
+    assert out == """\
+Usage:cg.py j1 j2 j
+"""
+
+
+
 if __name__ == "__main__":
-    test_dds()
+        unittest.main()
+

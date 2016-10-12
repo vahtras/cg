@@ -115,5 +115,5 @@ def main():
 
     print(CG(j_1, j_2, j_tot).cgmat)
 
-if __name__ == "__main__":
+if __name__ == "__main__": #pragma: no cover
     sys.exit(main())
